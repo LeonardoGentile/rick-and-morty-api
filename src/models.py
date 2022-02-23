@@ -49,7 +49,7 @@ class CharacterEpisode(Base):
 
     character_id = Column(Integer, ForeignKey("character.id"), primary_key=True)
     episode_id = Column(Integer, ForeignKey("episode.id"), primary_key=True)
-    comments = relationship("Comment", backref="character_in_episode")
+    comments = relationship("Comment")
 
 
 class CharacterType(Base):
@@ -58,7 +58,7 @@ class CharacterType(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True, unique=True)
     # Rels
-    characters = relationship("CharacterType", back_populates="type")
+    characters = relationship("Character", back_populates="type_")
 
 
 class Character(Base):
@@ -69,8 +69,9 @@ class Character(Base):
     status = Column(String)
     species = Column(String)
     gender = Column(String)
+
     # Rels
-    type = relationship("CharacterType", ForeignKey("character_type.id"), back_populates="characters")
+    type_ = Column(Integer, ForeignKey("character_type.id"))
     episodes = relationship("Episode", secondary=CharacterEpisode, back_populates="characters")
     comments = relationship("Comment")
 
