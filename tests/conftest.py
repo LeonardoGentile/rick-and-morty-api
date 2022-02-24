@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 
 from src.api.db import get_db
 from src.database import init_db
-from src.import_data import create_and_populate_db
+import import_data
 from src.main import app
 from src.settings import DATABASE_URL_TEST, DB_FILE_PATH_TEST, CHARACTERS_TEST_FILE, EPISODES_TEST_FILE
 
@@ -32,7 +32,7 @@ def override_get_db():
 
 app.dependency_overrides[get_db] = override_get_db
 
-create_and_populate_db(
+import_data.create_and_populate_db(
     SessionTest(),
     EPISODES_TEST_FILE,
     CHARACTERS_TEST_FILE
