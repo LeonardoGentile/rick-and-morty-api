@@ -15,10 +15,12 @@ engine = create_engine(
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-def init_db():
+def init_db(local_engine=None):
     # SQLModel.metadata.create_all(engine)
     from src import models
-    models.Base.metadata.create_all(bind=engine)
+    if not local_engine:
+        local_engine = engine
+    models.Base.metadata.create_all(bind=local_engine)
 
 
 Base = declarative_base()
