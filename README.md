@@ -72,5 +72,5 @@ In this case the comment item would simply point with a FK to the primary key of
 
 ---
 
-### get schwifty
+### Time to get Schwifty
 ![Rick](rick.jpeg)
