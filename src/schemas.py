@@ -95,7 +95,7 @@ class EpisodeCreate(EpisodeBase):
 
 class EpisodeRead(EpisodeBase):
     id: int
-    comments: List["CommentRead"]
+    # comments: List["CommentRead"]
 
 
 class EpisodeReadWithStringDate(EpisodeRead):
