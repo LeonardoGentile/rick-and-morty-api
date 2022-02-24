@@ -38,7 +38,7 @@ def get_comment(
 def get_comments(
         *,
         offset: int = 0,
-        limit: int = 100,
+        limit: int = 10,
         db: Session = Depends(get_db)
 ) -> List[Comment]:
     crud = CommentCrud()
