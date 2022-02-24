@@ -2,13 +2,12 @@ import json
 import os
 from datetime import datetime
 
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy import select, create_engine
+from sqlalchemy.orm import Session, sessionmaker
 
-# from src import models
-from src.database import SessionLocal, init_db
+from src.database import init_db
 from src.models import Episode, Character
-from src.settings import DB_FILE_PATH, EPISODES_FILE, CHARACTERS_FILE
+from src.settings import DB_FILE_PATH, EPISODES_FILE, CHARACTERS_FILE, DATABASE_URL
 
 
 def populate_episodes(session, file_name):
@@ -58,7 +57,9 @@ def populate_characters(session: Session, file_name: os.path):
 
 
 
-def main():
+def create_and_populate_db(session,
+                           episodes_file,
+                           characters_file):
     """Import Json into DB
 
     This is naif as everytime we run this script the
@@ -66,14 +67,28 @@ def main():
     I wouldn't do this in prod!
     """
 
+    populate_episodes(session, episodes_file)
+    populate_characters(session, characters_file)
+
+
+def main():
     if os.path.exists(DB_FILE_PATH):
         os.remove(DB_FILE_PATH)
 
-    init_db()
-    session = SessionLocal()
+    engine = create_engine(
+        DATABASE_URL,
+        echo=True,
+        connect_args={"check_same_thread": False}
+    )
 
-    populate_episodes(session, EPISODES_FILE)
-    populate_characters(session, CHARACTERS_FILE)
+    # Each instance of the SessionLocal class will be a database session
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    session = SessionLocal()
+    init_db(engine)
+
+    create_and_populate_db(session,
+                           EPISODES_FILE,
+                           CHARACTERS_FILE)
 
 
 if __name__ == "__main__":
