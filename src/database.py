@@ -4,11 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from src.settings import DATABASE_URL
 
-# specific for sqlite, ensuring you don't share the same
-# session with more than one request, the code is already safe
-# because of https://fastapi.tiangolo.com/async/
-connect_args = {"check_same_thread": False}
-
+connect_args = {"check_same_thread": False}  # specific for sqlite
 engine = create_engine(
     DATABASE_URL,
     echo=True,
@@ -17,5 +13,12 @@ engine = create_engine(
 
 # Each instance of the SessionLocal class will be a database session
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+def init_db():
+    # SQLModel.metadata.create_all(engine)
+    from src import models
+    models.Base.metadata.create_all(bind=engine)
+
 
 Base = declarative_base()

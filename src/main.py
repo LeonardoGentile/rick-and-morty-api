@@ -1,10 +1,9 @@
 from fastapi import FastAPI
 
-from src.database import engine
-from . import models
+from src.database import init_db
 from .api.router import api_router
 
-models.Base.metadata.create_all(bind=engine)
+init_db()
 
 app = FastAPI()
 
