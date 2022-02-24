@@ -14,11 +14,11 @@ router = APIRouter()
 @router.post("", status_code=201, response_model=CommentRead)
 def create_comment(
         *,
-        episode: CommentCreate,
+        comment: CommentCreate,
         db: Session = Depends(get_db)
 ) -> Comment:
     crud = CommentCrud()
-    comment = crud.create(db, episode)
+    comment = crud.create(db, comment)
     return comment
 
 

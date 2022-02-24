@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from enum import Enum
 
-from pydantic import BaseModel, validator, Field
+from pydantic import BaseModel, validator, root_validator
 from typing import Optional, List
 
 
@@ -95,7 +95,7 @@ class EpisodeCreate(EpisodeBase):
 
 class EpisodeRead(EpisodeBase):
     id: int
-    characters: List["CharacterBase"]
+    comments: List["CommentRead"]
 
 
 class EpisodeReadWithStringDate(EpisodeRead):
@@ -122,12 +122,20 @@ class Comment(CommentBase):
 
 
 class CommentCreate(CommentBase):
-    episode_id: int
-    character_id: int
-    user_id: int
+    episode_id: Optional[int] = None
+    character_id: Optional[int] = None
+    user_id: Optional[int] = None
+
+    @root_validator
+    def check_ids(cls, values):
+        episode_id, character_id = values.get('episode_id'), values.get('character_id')
+        if episode_id is None and character_id is None:
+            raise ValueError("Both 'episode_id', 'character_id' can't be empty")
+        return values
+
 
 
 class CommentRead(CommentBase):
-    user_id: int
-    episode_id: int
-    character_id: int
+    user_id: Optional[int]
+    episode_id: Optional[int]
+    character_id: Optional[int]

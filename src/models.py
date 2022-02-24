@@ -21,7 +21,7 @@ class CharacterEpisode(Base):
 
     character_id = Column(Integer, ForeignKey("character.id"), primary_key=True)
     episode_id = Column(Integer, ForeignKey("episode.id"), primary_key=True)
-    # comments = relationship("Comment")
+    comments = relationship("Comment")
 
 
 
@@ -69,10 +69,10 @@ class Comment(Base):
     character_id = Column(Integer, ForeignKey("character.id"))
     character = relationship("Character")
 
-    # character_in_episode = relationship("CharacterEpisode", foreign_keys=[character_id, episode_id],
-    #                                     back_populates="comments")
-    #
-    # __table_args__ = (ForeignKeyConstraint((episode_id, character_id),
-    #                                        (CharacterEpisode.episode_id, CharacterEpisode.character_id)
-    #                                        ), {})
+    character_in_episode = relationship("CharacterEpisode", foreign_keys=[character_id, episode_id],
+                                        back_populates="comments")
+
+    __table_args__ = (ForeignKeyConstraint((episode_id, character_id),
+                                           (CharacterEpisode.episode_id, CharacterEpisode.character_id)
+                                           ), {})
 
