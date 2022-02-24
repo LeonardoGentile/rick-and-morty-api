@@ -129,5 +129,5 @@ class CommentCreate(CommentBase):
 
 class CommentRead(CommentBase):
     user_id: int
-    episode_id: str
-    character_id: str
+    episode_id: int
+    character_id: int
