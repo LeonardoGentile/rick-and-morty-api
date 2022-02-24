@@ -5,7 +5,6 @@ from pydantic import BaseModel, validator, Field
 from typing import Optional, List
 
 
-
 class StatusEnum(str, Enum):
     ALIVE = 'Alive'
     DEAD = 'Dead'
@@ -32,7 +31,6 @@ class SpeciesEnum(str, Enum):
     CRONENBERG = 'Cronenberg'
 
 
-
 class CharacterBase(BaseModel):
     id: Optional[int]
     name: str
@@ -40,7 +38,6 @@ class CharacterBase(BaseModel):
     gender: GenderEnum
     species: SpeciesEnum
     type: Optional[str] = None
-
 
     class Config:
         orm_mode = True
@@ -85,6 +82,7 @@ class EpisodeCreate(EpisodeBase):
         - once initial validation from body (body as dict).     `air_date` is str
         - when the model is instantiated, it calls validation.  `air_date` is `date`
     """
+
     @validator("air_date", pre=True)
     def parse_air_date(cls, value, values):
         if isinstance(value, str):
@@ -109,3 +107,27 @@ class EpisodeReadWithStringDate(EpisodeRead):
         if isinstance(value, date):
             return value.strftime("%B %d, %Y")
         return value
+
+
+class CommentBase(BaseModel):
+    id: Optional[int]
+    content: str
+
+    class Config:
+        orm_mode = True
+
+
+class Comment(CommentBase):
+    pass
+
+
+class CommentCreate(CommentBase):
+    episode_id: int
+    character_id: int
+    user_id: int
+
+
+class CommentRead(CommentBase):
+    user_id: int
+    episode_id: str
+    character_id: str

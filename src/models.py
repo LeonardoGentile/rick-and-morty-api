@@ -64,7 +64,10 @@ class Comment(Base):
     user = relationship("User")
 
     episode_id = Column(Integer, ForeignKey("episode.id"))
+    episode = relationship("Episode")
+
     character_id = Column(Integer, ForeignKey("character.id"))
+    character = relationship("Character")
 
     # character_in_episode = relationship("CharacterEpisode", foreign_keys=[character_id, episode_id],
     #                                     back_populates="comments")
