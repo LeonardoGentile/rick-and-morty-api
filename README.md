@@ -61,10 +61,10 @@ The application has some space for improvements.
 
 ### Comment on a character on an episode
 
-Since a comment can also be applied to a character appearing on an episode this is technically feasible by 
-passing both FK to `Character` and `Episode` at the same time. 
-In this case they identify a row in the association table `CharacterEpisode`. 
-This case is not tested ⚠️
+Since a comment can also be applied to a character appearing on an episode this is technically feasible in two different ways. 
+
+When creating a comment object we can pass both FKs to `Character` and `Episode` at the same time. 
+In this case they identify a row in the association table `CharacterEpisode` (this case is not tested ⚠️)
 
 Another easier way to do this: add a **single** primary key to `CharacterEpisode`, 
 and a constraint on `character_id` and `episode_id` to be unique together. 
